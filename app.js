@@ -29,7 +29,7 @@ app.listen(3030, () => {
 });
 
 function initDB(db) {
-  db.run("CREATE TABLE IF NOT EXISTS ships (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, latIni REAL, lngIni REAL, latDest REAL, lngDest REAL, direction TEXT);");
+  db.run("CREATE TABLE IF NOT EXISTS ships (id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, description TEXT, latIni REAL, lngIni REAL, latDest REAL, lngDest REAL, direction TEXT);");
   console.log("Table ships created");
 }
 
@@ -40,7 +40,7 @@ function initDB(db) {
 // GET /ships 
 app.get("/ships", (req, res) => {
   console.log("GET /ships");
-  let sql = "select * from ships";
+  let sql = "select * from ships order by id desc";
   db.all(sql, [], (err, rows) => {
     if (err) {
       throw err;
@@ -73,7 +73,8 @@ app.get('/ships/:id', function(req, res) {
 // POST /ships 
 app.post("/ships", (req, res) => {
   console.log("POST /ships");
-  let sql = "insert into ships (name, latIni, lngIni, latDest, lngDest, direction) values (?,?,?,?,?,?)";
+  console.log(req.body);
+  let sql = "insert into ships (name, description, latIni, lngIni, latDest, lngDest, direction) values (?,?,?,?,?,?,?)";
   db.run(sql, Object.values(req.body), function (err) {
     if (err) {
       res.send(err.message, 500);
@@ -88,8 +89,8 @@ app.post("/ships", (req, res) => {
 // PUT /ships/:id
 app.put('/ships/:id', function(req, res) {
   console.log("PUT /ships/:id");
-  
-  let sql = "update ships set name = ?, latIni = ?, lngIni = ?, latDest = ?, lngDest = ?, direction = ? where id = ?";
+  console.log(req.body);
+  let sql = "update ships set name = ?, description = ?, latIni = ?, lngIni = ?, latDest = ?, lngDest = ?, direction = ? where id = ?";
   let updArray = Object.values(req.body);
   updArray.push(req.params.id);
   db.run(sql, updArray, function (err) {
