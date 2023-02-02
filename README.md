@@ -1,6 +1,6 @@
 # ShipCompany Back
 
-Front de administrador de embarcaciones.
+BackEnd de administrador de embarcaciones.
 
 ## NodeJS
 
